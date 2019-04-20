@@ -40,7 +40,7 @@ resource "google_compute_instance" "this" {
   }
 
   metadata {
-    sshKeys = "${var.ssh_user}:${file("${path.module}/${var.ssh_pub_file}")}"
+    sshKeys = "${var.ssh_user}:${file("${var.ssh_pub_file}")}"
   }
 
 }
