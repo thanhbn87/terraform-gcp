@@ -12,7 +12,7 @@ resource "google_dns_managed_zone" "private" {
 
   private_visibility_config {
     networks {
-      network_url =  "${var..network_self_link}"
+      network_url =  "${var.network_self_link}"
     }
   }
 }
