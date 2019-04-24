@@ -40,3 +40,15 @@ resource "google_compute_instance" "this" {
   }
 
 }
+
+/// DNS private:
+resource "google_dns_record_set" "private" {
+  count        = "${var.dns_private ? "${var.instance_count}" : 0}"
+  name         = "${var.name}-${format("%02d", count.index + 1)}.${var.domain_private}."
+  type         = "A"
+  ttl          = "${var.dns_ttl}"
+
+  managed_zone = "${var.dns_private_name}"
+
+  rrdatas = ["${element(google_compute_instance.this.*.network_interface.0.network_ip,count.index)}"]
+}

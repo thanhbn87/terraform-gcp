@@ -15,3 +15,9 @@ variable "disk_size" { default = "10" }
 variable "ssh_pub_file" { default = "../sshkeys/id_rsa.pub" }
 variable "ssh_user" { default = "centos" }
 variable "startup_script" { default = "startup.sh" }
+
+/// DNS private:
+variable "dns_private" {default = true}
+variable "dns_ttl" {default = "300"}
+variable "domain_private" {default = "example.internal"}
+variable "dns_private_name" {default = "dns-internal"}
