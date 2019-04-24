@@ -34,6 +34,7 @@ resource "google_compute_instance" "this" {
     }
   }
 
+  metadata_startup_script = "${file("${var.startup_script}")}"
   metadata {
     sshKeys = "${var.ssh_user}:${file("${var.ssh_pub_file}")}"
   }
