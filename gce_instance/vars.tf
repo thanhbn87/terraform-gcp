@@ -14,4 +14,4 @@ variable "image_project" { default = "centos-cloud" }
 variable "disk_size" { default = "10" }
 variable "ssh_pub_file" { default = "../sshkeys/id_rsa.pub" }
 variable "ssh_user" { default = "centos" }
-variable "startup_script" { default = "startup.sh" }
+variable "startup_script" { default = "${path.module}/startup.sh" }
