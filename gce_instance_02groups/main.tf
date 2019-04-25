@@ -41,11 +41,17 @@ resource "google_compute_instance" "this" {
 
 }
 
-data "null_data_source" "instance_lists" {
+data "null_data_source" "instance_lists_01" {
   count  = "${length(var.instance_count)}"
   inputs = {
-    self_links_01 = "${ "${floor(count.index % 2)}" == 0 ? "${element(google_compute_instance.this.*.self_link,count.index)}" : "" }"
-    self_links_02 = "${ "${floor(count.index % 2)}" == 1 ? "${element(google_compute_instance.this.*.self_link,count.index)}" : "" }"
+    self_links = "${ "${floor(count.index % 2)}" == 0 ? "${element(google_compute_instance.this.*.self_link,count.index)}" : "" }"
+  }
+}
+
+data "null_data_source" "instance_lists_02" {
+  count  = "${length(var.instance_count)}"
+  inputs = {
+    self_links = "${ "${floor(count.index % 2)}" == 1 ? "${element(google_compute_instance.this.*.self_link,count.index)}" : "" }"
   }
 }
 
@@ -54,7 +60,7 @@ resource "google_compute_instance_group" "group_01" {
   name        = "${var.name}-01"
   description = "${var.desc} group 01"
 
-  instances = ["${compact("${data.null_data_source.instance_lists.*.outputs["self_links_01"]}")}"]
+  instances = ["${compact(concat(data.null_data_source.instance_lists_01.*.inputs.self_links))}"]
 
   named_port {
     name = "http"
@@ -74,7 +80,7 @@ resource "google_compute_instance_group" "group_02" {
   name        = "${var.name}-02"
   description = "${var.desc} 02"
 
-  instances = ["${compact(data.null_data_source.instance_lists.*.outputs["self_links_02"])}"]
+  instances = ["${compact(concat(data.null_data_source.instance_lists_02.*.inputs.self_links))}"]
 
   named_port {
     name = "http"
