@@ -50,7 +50,8 @@ data "null_data_source" "instance_lists" {
 }
 
 resource "google_compute_instance_group" "group_01" {
-  count       = "${length(compact(data.null_data_source.instance_lists.*.inputs.self_links_01)) > 0 ? 1 : 0}"
+  //count       = "${length(compact(data.null_data_source.instance_lists.*.inputs.self_links_01)) > 0 ? 1 : 0}"
+  count       = "${var.instance_count > 0 ? 1 : 0}"
   name        = "${var.name}-01"
   description = "${var.desc} group 01"
 
@@ -70,7 +71,8 @@ resource "google_compute_instance_group" "group_01" {
 }
 
 resource "google_compute_instance_group" "group_02" {
-  count       = "${length(data.null_data_source.instance_lists.*.inputs.self_links_02) > 0 ? 1 : 0}"
+  //count       = "${length(data.null_data_source.instance_lists.*.inputs.self_links_02) > 0 ? 1 : 0}"
+  count       = "${var.instance_count > 1 ? 1 : 0}"
   name        = "${var.name}-02"
   description = "${var.desc} 02"
 
