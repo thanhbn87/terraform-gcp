@@ -59,7 +59,7 @@ resource "google_compute_instance_group" "group_02" {
 }
 
 data "null_data_source" "backends" {
-  count   = "${length(var.gce_self_links)}"
+  count   = "2"
   inputs {
     group = "${element(
                  "${compact(concat(
