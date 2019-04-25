@@ -1,7 +1,7 @@
 data "google_compute_zones" "available" {}
 
 data "null_data_source" "instance_lists_01" {
-  count  = "${length(var.gce_self_links)}"
+  count  = "${length(var.gce_self_links)} > 0 ? length(var.gce_self_links)} : 0"
   inputs = {
     self_links = "${ "${floor(count.index % 2)}" == 0 ? "${element("${var.gce_self_links}",count.index)}" : "" }"
   }
