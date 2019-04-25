@@ -3,14 +3,14 @@ data "google_compute_zones" "available" {}
 data "null_data_source" "instance_lists_01" {
   count  = "${length(var.gce_self_links)}"
   inputs = {
-    self_links = "${ "${floor(count.index % 3)}" == 0 ? "${element("${var.gce_self_links}",count.index)}" : "" }"
+    self_links = "${ "${floor(count.index % 2)}" == 0 ? "${element("${var.gce_self_links}",count.index)}" : "" }"
   }
 }
 
 data "null_data_source" "instance_lists_02" {
   count  = "${length(var.gce_self_links)}"
   inputs = {
-    self_links = "${ "${floor(count.index % 3)}" == 1 ? "${element("${var.gce_self_links}",count.index)}" : "" }"
+    self_links = "${ "${floor(count.index % 2)}" == 1 ? "${element("${var.gce_self_links}",count.index)}" : "" }"
   }
 }
 
