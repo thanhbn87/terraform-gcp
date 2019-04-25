@@ -1,5 +1,6 @@
 variable "name" { default = "LB for Unmanaged instance group" }
 variable "desc" { default = "Load Balancer for The group of unmanaged instances" }
+variable "instance_count" { default = "0" }
 variable "gce_self_links" { default = [] }
 variable "http_port" { default = "80" }
 variable "http_port_name" { default = "http" }
