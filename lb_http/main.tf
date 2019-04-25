@@ -4,9 +4,15 @@ locals {
   instance_count = "${length(concat(var.gce_self_links,list("")))}"
 }
 
-data "null_data_source" "instance_lists_01" {
+//data "null_data_source" "instance_lists_01" {
+//  count  = "${local.instance_count}"
+//  inputs = {
+//    self_links = "${ "${floor(count.index % 2)}" == 0 ? "${element("${var.gce_self_links}",count.index)}" : "" }"
+//  }
+//}
+resource "null_resource" "instance_lists_01" {
   count  = "${local.instance_count}"
-  inputs = {
+  triggers = {
     self_links = "${ "${floor(count.index % 2)}" == 0 ? "${element("${var.gce_self_links}",count.index)}" : "" }"
   }
 }
@@ -19,11 +25,13 @@ data "null_data_source" "instance_lists_02" {
 }
 
 resource "google_compute_instance_group" "group_01" {
-  count       = "${length(compact(concat(data.null_data_source.instance_lists_01.*.inputs.self_links))) > 0 ? 1 : 0}"
+  //count       = "${length(compact(concat(data.null_data_source.instance_lists_01.*.inputs.self_links))) > 0 ? 1 : 0}"
+  count       = "${length(compact(concat(null_resource.instance_lists_01.*.triggers.self_links))) > 0 ? 1 : 0}"
   name        = "${var.name}-01"
   description = "${var.desc} group 01"
 
-  instances = ["${compact(concat(data.null_data_source.instance_lists_01.*.inputs.self_links))}"]
+  //instances = ["${compact(concat(data.null_data_source.instance_lists_01.*.inputs.self_links))}"]
+  instances = ["${compact(concat(null_resource.instance_lists_01.instance_lists_01.*.triggers.self_links))}"]
 
   named_port {
     name = "http"
