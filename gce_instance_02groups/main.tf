@@ -54,7 +54,7 @@ resource "google_compute_instance_group" "group_01" {
   name        = "${var.name}-01"
   description = "${var.desc} group 01"
 
-  instances = ["${compact(data.null_data_source.instance_lists.*.inputs["self_links_01"])}"]
+  instances = ["${compact(data.null_data_source.instance_lists.*.outputs["self_links_01"])}"]
 
   named_port {
     name = "http"
@@ -74,7 +74,7 @@ resource "google_compute_instance_group" "group_02" {
   name        = "${var.name}-02"
   description = "${var.desc} 02"
 
-  instances = ["${compact(data.null_data_source.instance_lists.*.inputs["self_links_02"])}"]
+  instances = ["${compact(data.null_data_source.instance_lists.*.outputs["self_links_02"])}"]
 
   named_port {
     name = "http"
