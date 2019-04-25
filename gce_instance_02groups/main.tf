@@ -72,7 +72,7 @@ resource "google_compute_instance_group" "group_01" {
 resource "google_compute_instance_group" "group_02" {
   count       = "${length(compact(concat(data.null_data_source.instance_lists.*.inputs.self_links_02))) > 0 ? 1 : 0}"
   name        = "${var.name}-02"
-  description = "${var.desc} group 02"
+  description = "${var.desc} 02"
 
   instances = ["${compact(concat(data.null_data_source.instance_lists.*.inputs.self_links_02))}"]
 
