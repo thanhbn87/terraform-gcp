@@ -62,11 +62,11 @@ data "null_data_source" "backends" {
   count   = "2"
   inputs {
     group = "${element(
-                 "${compact(concat(
+                 "${concat(
                    google_compute_instance_group.group_01.*.self_link,
                    google_compute_instance_group.group_02.*.self_link,
                    list("")
-                 ))}",
+                 )}",
                  count.index
             )}"
   }
