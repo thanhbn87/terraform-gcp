@@ -1,7 +1,7 @@
 data "google_compute_zones" "available" {}
 
 locals {
-  instance_count = "${length(var.gce_self_links) > 0 ? length(var.gce_self_links) : 0}"
+  instance_count = "${length(compact(concat(var.gce_self_links,list(""))))}"
 }
 
 data "null_data_source" "instance_lists_01" {
