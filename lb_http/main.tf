@@ -1,14 +1,14 @@
 data "google_compute_zones" "available" {}
 
 data "null_data_source" "instance_lists_01" {
-  count  = "${length(var.instance_count)}"
+  count  = "${var.instance_count}"
   inputs = {
     self_links = "${ "${floor(count.index % 2)}" == 0 ? "${element("${var.gce_self_links}",count.index)}" : "" }"
   }
 }
 
 data "null_data_source" "instance_lists_02" {
-  count  = "${length(var.instance_count)}"
+  count  = "${var.instance_count}"
   inputs = {
     self_links = "${ "${floor(count.index % 2)}" == 1 ? "${element("${var.gce_self_links}",count.index)}" : "" }"
   }
@@ -19,7 +19,7 @@ resource "google_compute_instance_group" "group_01" {
   name        = "${var.name}-01"
   description = "${var.desc} group 01"
 
-  instances = ["${compact(concat(data.null_data_source.instance_lists_01.*.inputs.self_links))}"]
+  instances = ["${compact(data.null_data_source.instance_lists_01.*.inputs.self_links)}"]
 
   named_port {
     name = "http"
@@ -39,7 +39,7 @@ resource "google_compute_instance_group" "group_02" {
   name        = "${var.name}-02"
   description = "${var.desc} group 02"
 
-  instances = ["${compact(concat(data.null_data_source.instance_lists_02.*.inputs.self_links))}"]
+  instances = ["${compact(data.null_data_source.instance_lists_02.*.inputs.self_links)}"]
 
   named_port {
     name = "http"
